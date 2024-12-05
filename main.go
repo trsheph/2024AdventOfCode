@@ -6,9 +6,10 @@ import (
 	"strconv"
 
 	"github.com/trsheph/2024AdventOfCode/pkg/dayone"
-	"github.com/trsheph/2024AdventOfCode/pkg/daythree"
 	"github.com/trsheph/2024AdventOfCode/pkg/daytwo"
+	"github.com/trsheph/2024AdventOfCode/pkg/daythree"
 	"github.com/trsheph/2024AdventOfCode/pkg/dayfour"
+	"github.com/trsheph/2024AdventOfCode/pkg/dayfive"
 )
 
 func main() {
@@ -45,5 +46,7 @@ func main() {
 		daythree.ProcDayThree(inFile, procDos)
 	} else if inDay == 4 {
 		dayfour.ProcDayFour(inFile)
+	} else if inDay == 5 {
+		dayfive.ProcDayFive(inFile)
 	}
 }
