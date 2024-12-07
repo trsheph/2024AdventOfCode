@@ -22,30 +22,32 @@ type RulePlate struct {
 }
 
 type GuardData struct {
-	Xpos int
-	Ypos int
-	Nx   int
-	Ny   int
-	Dx   int
-	Dy   int
+	Xpos   int
+	Ypos   int
+	Nx     int
+	Ny     int
+	Dx     int
+	Dy     int
+	Unique bool
 }
 
 var Obstacles []Obstacle
 var Guard GuardData
 var GuardPath []GuardData
 
-func countUniquePositions(totalSteps int) (totalCnt int) {
-	totalCnt = totalSteps
-	for i := range GuardPath {
-		for j := i + 1; j < len(GuardPath); j++ {
-			if (GuardPath[i].Xpos == GuardPath[j].Xpos) && (GuardPath[i].Ypos == GuardPath[j].Ypos) {
-				totalCnt = totalCnt - 1
+/*
+	func countUniquePositions(totalSteps int) (totalCnt int) {
+		totalCnt = totalSteps
+		for i := range GuardPath {
+			for j := i + 1; j < len(GuardPath); j++ {
+				if (GuardPath[i].Xpos == GuardPath[j].Xpos) && (GuardPath[i].Ypos == GuardPath[j].Ypos) {
+					totalCnt = totalCnt - 1
+				}
 			}
 		}
+		return
 	}
-	return
-}
-
+*/
 func genNewMap(xob int, yob int) (localObs []Obstacle) {
 	var skipFlag bool
 	skipFlag = false
@@ -108,16 +110,18 @@ func takeStep(xmax int, ymax int, localObs []Obstacle) (stepCount int, err strin
 	Guard.Ny = Guard.Ypos + Guard.Dy
 	for _, guardPos := range GuardPath {
 		if Guard.Xpos == guardPos.Xpos && Guard.Ypos == guardPos.Ypos {
+			Guard.Unique = false
 			if Guard.Nx == guardPos.Nx && Guard.Ny == guardPos.Ny {
 				err = "guard is looping"
 				// fmt.Println("Guard is looping:")
-				stepCount = stepCount - 1
 				return
 			}
 		}
 	}
+	if Guard.Unique {
+		stepCount = stepCount + 1
+	}
 	GuardPath = append(GuardPath, Guard)
-	stepCount = stepCount + 1
 	for isObstructed {
 		for _, obstruction := range localObs {
 			if (Guard.Nx == obstruction.Xpos) && (Guard.Ny == obstruction.Ypos) {
@@ -132,7 +136,6 @@ func takeStep(xmax int, ymax int, localObs []Obstacle) (stepCount int, err strin
 								if Guard.Nx == guardPos.Nx && Guard.Ny == guardPos.Ny {
 									err = "guard is looping"
 									// fmt.Println("Guard is looping")
-									stepCount = stepCount - 1
 									return
 								}
 							}
@@ -309,8 +312,8 @@ func ProcDaySix(filename string) {
 	}
 	guardInit = Guard
 	totalSteps, _ := gInZone(charMatrix, Obstacles)
-	totalUniquePositions := countUniquePositions(totalSteps)
-	fmt.Println(totalUniquePositions)
+	// totalUniquePositions := countUniquePositions(totalSteps)
+	fmt.Println(totalSteps)
 	var totalLoopPositions, totalOutPositions int
 	for i := 1; i < len(charMatrix)-1; i++ {
 		for j := 1; j < len(charMatrix[i])-1; j++ {
