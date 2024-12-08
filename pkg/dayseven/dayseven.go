@@ -2,10 +2,10 @@ package dayseven
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 	"strings"
-	"math"
 )
 
 func readDaySeven(filename string) (fileRows []string) {
@@ -54,11 +54,23 @@ func removeDuplicates(slice []int) []int {
 	return result
 }
 
-func powInt(x, y int) int {
-    return int(math.Pow(float64(x), float64(y)))
+func powInt(x int, y int) int {
+	return int(math.Pow(float64(x), float64(y)))
 }
 
-func ProcDaySeven(filename string) {
+func concat(x int, y int) int {
+	outVal, err := strconv.Atoi(strconv.Itoa(x) + strconv.Itoa(y))
+	if err != nil {
+		panic(err)
+	}
+	return outVal
+}
+
+func ProcDaySeven(filename string, ptBS string) {
+	var ptB bool
+	if ptBS == "true" || ptBS == "t" {
+		ptB = true
+	}
 	var totalVal int
 	var goodRows []int
 	fileRows := readDaySeven(filename)
@@ -74,9 +86,16 @@ func ProcDaySeven(filename string) {
 				mOp := allOps[k] * rside[i][j]
 				allOps = append(allOps, sOp)
 				allOps = append(allOps, mOp)
+				if ptB {
+					cOp := concat(allOps[k], rside[i][j])
+					allOps = append(allOps, cOp)
+				}
 			}
 		}
-		topOps = len(allOps)-powInt(2, len(rside[i])-1)
+		topOps = len(allOps) - powInt(2, len(rside[i])-1)
+		if ptB {
+			topOps = len(allOps) - powInt(3, len(rside[i])-1)
+		}
 		allOps = allOps[topOps:]
 		for j := 0; j < len(allOps); j++ {
 			if lside[i] == allOps[j] {

@@ -53,6 +53,6 @@ func main() {
 	} else if inDay == 6 {
 		daysixb.ProcDaySix(inFile)
 	} else if inDay == 7 {
-		dayseven.ProcDaySeven(inFile)
+		dayseven.ProcDaySeven(inFile, procDos)
 	}
 }
