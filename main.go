@@ -5,15 +5,16 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/trsheph/2024AdventOfCode/pkg/dayone"
-	"github.com/trsheph/2024AdventOfCode/pkg/daytwo"
-	"github.com/trsheph/2024AdventOfCode/pkg/daythree"
-	"github.com/trsheph/2024AdventOfCode/pkg/dayfour"
-	"github.com/trsheph/2024AdventOfCode/pkg/dayfive"
-	"github.com/trsheph/2024AdventOfCode/pkg/daysix"
-	"github.com/trsheph/2024AdventOfCode/pkg/dayseven"
 	"github.com/trsheph/2024AdventOfCode/pkg/dayeight"
+	"github.com/trsheph/2024AdventOfCode/pkg/dayfive"
+	"github.com/trsheph/2024AdventOfCode/pkg/dayfour"
 	"github.com/trsheph/2024AdventOfCode/pkg/daynine"
+	"github.com/trsheph/2024AdventOfCode/pkg/dayone"
+	"github.com/trsheph/2024AdventOfCode/pkg/dayseven"
+	"github.com/trsheph/2024AdventOfCode/pkg/daysix"
+	"github.com/trsheph/2024AdventOfCode/pkg/dayten"
+	"github.com/trsheph/2024AdventOfCode/pkg/daythree"
+	"github.com/trsheph/2024AdventOfCode/pkg/daytwo"
 )
 
 func main() {
@@ -60,5 +61,7 @@ func main() {
 		dayeight.ProcDayEight(inFile, procDos)
 	} else if inDay == 9 {
 		daynine.ProcDayNine(inFile)
+	} else if inDay == 10 {
+		dayten.ProcDayTen(inFile)
 	}
 }
