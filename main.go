@@ -13,6 +13,7 @@ import (
 	"github.com/trsheph/2024AdventOfCode/pkg/daysix"
 	"github.com/trsheph/2024AdventOfCode/pkg/dayseven"
 	"github.com/trsheph/2024AdventOfCode/pkg/dayeight"
+	"github.com/trsheph/2024AdventOfCode/pkg/daynine"
 )
 
 func main() {
@@ -57,5 +58,7 @@ func main() {
 		dayseven.ProcDaySeven(inFile, procDos)
 	} else if inDay == 8 {
 		dayeight.ProcDayEight(inFile, procDos)
+	} else if inDay == 9 {
+		daynine.ProcDayNine(inFile)
 	}
 }
