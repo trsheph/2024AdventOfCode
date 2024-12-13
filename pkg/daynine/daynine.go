@@ -107,32 +107,107 @@ func invQueue(dTwoSlice [][]int64) (tOutSlice [][]int64) {
 	return
 }
 
+func equalSlice(a, b []int64) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i, v := range a {
+		if v != b[i] {
+			return false
+		}
+	}
+	return true
+}
+
+func compressZeros(inMatrix [][]int64) (newMatrix [][]int64) {
+	var tmpRow []int64
+	var cacheMatrix [][]int64
+	backInMatrix := inMatrix
+	cacheMatrix = [][]int64{{}}
+	for i := 1; i < len(backInMatrix); i++ {
+		if len(backInMatrix[i]) > 0 {
+			if len(backInMatrix[i-1]) > 0 {
+				if int64(backInMatrix[i-1][0]) == int64(0) && int64(backInMatrix[i][0]) == int64(0) {
+					tmpRow = backInMatrix[i-1]
+					tmpRow = append(tmpRow, backInMatrix[i]...)
+					cacheMatrix = backInMatrix[:i-1]
+					cacheMatrix = append(cacheMatrix, tmpRow)
+					if len(backInMatrix[i:]) > 1 {
+						cacheMatrix = append(cacheMatrix, backInMatrix[i+1:]...)
+					}
+					backInMatrix = cacheMatrix
+					i = 1
+				}
+			}
+		}
+	}
+	if len(cacheMatrix) > 1 {
+		backInMatrix = cacheMatrix
+	}
+	for i := 0; i < len(backInMatrix); i++ {
+		if len(backInMatrix[i]) > 0 {
+			newMatrix = append(newMatrix, backInMatrix[i])
+		}
+	}
+	return
+}
+
 func procPartTwo(dTwoSlice [][]int64) (dTwoSliceB [][]int64) {
-	dTwoSliceB = dTwoSlice
-	tmpDTwo := [][]int64{{}}
-	shuffleQueue := invQueue(dTwoSlice)
-	fmt.Println(shuffleQueue)
-	for _, vals := range shuffleQueue {
-		lenV := len(vals)
-		for j, regi := range dTwoSliceB {
-			lenR := len(regi)
-			if lenR >= lenV && lenR > 0 {
-				if regi[0] == int64(0) {
-					tmpDTwo = append(tmpDTwo, vals)
-					tmpDTwo = append(tmpDTwo, regi[lenV:])
-					for k := j + 1; k < len(dTwoSliceB); k++ {
-						tmpDTwo = append(tmpDTwo, dTwoSliceB[k])
+	var lenV, lenR int
+	dTwoSliceB = dTwoSlice // make copy of the 2D slice
+	backupDTslice := [][]int64{{}}
+	keepGoing := true
+	appendBack := true
+	sameArray := true
+	// var newInvQ [][]int64
+	tmpDTwo := [][]int64{{}}         // set a new 2D slice that is empty
+	invertedQ := invQueue(dTwoSlice) // invertedQueue of additions to empty registers
+	for keepGoing {
+		for _, vals := range invertedQ {
+			lenV = len(vals)
+			backupDTslice = dTwoSliceB
+			tmpDTwo = [][]int64{{}}
+			appendBack = true
+			for _, regi := range dTwoSliceB {
+				lenR = len(regi)
+				if lenR >= lenV && lenR > 0 {
+					if (regi[0] == int64(0)) && appendBack { // this block is for when a register is full of 0s and large enough to fit the mem segment
+						tmpDTwo = append(tmpDTwo, vals)
+						tmpDTwo = append(tmpDTwo, regi[lenV:])
+						// tmpDTwo = append(tmpDTwo, dTwoSliceB[j+1:]...)
+						appendBack = false
+					} else if equalSlice(regi, vals) { // if it rus into the current memory segment
+						if appendBack == false { // if it runs into it after moving it, set the segment to 0s
+							var tmpNewRegi []int64
+							for i := 0; i < len(regi); i++ {
+								tmpNewRegi = append(tmpNewRegi, int64(0))
+							}
+							tmpDTwo = append(tmpDTwo, tmpNewRegi)
+						} else { // appendBack is true still, which means that it found itself before finding a register
+							tmpDTwo = append(tmpDTwo, regi)
+							appendBack = false
+						}
+					} else {
+						tmpDTwo = append(tmpDTwo, regi)
 					}
 				} else {
 					tmpDTwo = append(tmpDTwo, regi)
 				}
-			} else {
-				tmpDTwo = append(tmpDTwo, regi)
+			}
+			tmpDTwo = tmpDTwo[1:]
+			tmpDTwo = compressZeros(tmpDTwo)
+			dTwoSliceB = tmpDTwo
+		}
+		// invertedQ = newInvQ
+		sameArray = true
+		for i, valsA := range backupDTslice {
+			if !(equalSlice(valsA, dTwoSliceB[i])) {
+				sameArray = false
 			}
 		}
-		fmt.Println(tmpDTwo)
-		dTwoSliceB = tmpDTwo
-		tmpDTwo = [][]int64{{}}
+		if sameArray {
+			keepGoing = false
+		}
 	}
 	return
 }
@@ -148,10 +223,15 @@ func ProcDayNine(filename string) {
 	diskSlice := initDayNine(readDayNine(filename))
 	outSum := checkSum(procPartOne(decompressOne(diskSlice)))
 	fmt.Println(outSum)
-	dTwoSlice, firstslice := decompressTwo(diskSlice)
-	fmt.Println(dTwoSlice)
-	fmt.Println(firstslice)
+	dTwoSlice, firstSlice := decompressTwo(diskSlice)
 	outSlice := procPartTwo(dTwoSlice)
-	fmt.Println(outSlice)
-	// outSum = checkSum(outSlice)
+	finalMatrix := [][]int64{{}}
+	finalMatrix[0] = firstSlice
+	finalMatrix = append(finalMatrix, outSlice...)
+	var finalSlice []int64
+	for _, row := range finalMatrix {
+		finalSlice = append(finalSlice, row...)
+	}
+	outSum = checkSum(finalSlice)
+	fmt.Println(outSum)
 }
