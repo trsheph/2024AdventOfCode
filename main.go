@@ -9,11 +9,13 @@ import (
 	"github.com/trsheph/2024AdventOfCode/pkg/dayeleven"
 	"github.com/trsheph/2024AdventOfCode/pkg/dayfive"
 	"github.com/trsheph/2024AdventOfCode/pkg/dayfour"
+	"github.com/trsheph/2024AdventOfCode/pkg/dayfourteen"
 	"github.com/trsheph/2024AdventOfCode/pkg/daynine"
 	"github.com/trsheph/2024AdventOfCode/pkg/dayone"
 	"github.com/trsheph/2024AdventOfCode/pkg/dayseven"
 	"github.com/trsheph/2024AdventOfCode/pkg/daysix"
 	"github.com/trsheph/2024AdventOfCode/pkg/dayten"
+	"github.com/trsheph/2024AdventOfCode/pkg/daythirteen"
 	"github.com/trsheph/2024AdventOfCode/pkg/daythree"
 	"github.com/trsheph/2024AdventOfCode/pkg/daytwo"
 )
@@ -66,5 +68,9 @@ func main() {
 		dayten.ProcDayTen(inFile)
 	} else if inDay == 11 {
 		dayeleven.ProcDayEleven(inFile)
+	} else if inDay == 13 {
+		daythirteen.ProcDayThirteen(inFile)
+	} else if inDay == 14 {
+		dayfourteen.ProcDayFourteen(inFile)
 	}
 }
