@@ -7,6 +7,19 @@ import (
 	"strings"
 )
 
+type Stone struct {
+	Vint int
+	Vstr string
+	Children []*Stone
+}
+
+func DFS(stone *Stone) {
+	if stone == nil {
+		return
+	}
+	
+}
+
 func fillCache(stone string, blinks int) (outStone []string) {
 	inStone := []string{stone}
 	for i := 0; i < blinks; i++ {
@@ -15,6 +28,8 @@ func fillCache(stone string, blinks int) (outStone []string) {
 	outStone = inStone
 	return
 }
+
+
 
 func blink(stones []string) (newStones []string) {
 	for _, stone := range stones {

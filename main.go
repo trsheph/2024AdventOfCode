@@ -17,6 +17,8 @@ import (
 	"github.com/trsheph/2024AdventOfCode/pkg/dayten"
 	"github.com/trsheph/2024AdventOfCode/pkg/daythirteen"
 	"github.com/trsheph/2024AdventOfCode/pkg/daythree"
+	"github.com/trsheph/2024AdventOfCode/pkg/daytwentythree"
+	"github.com/trsheph/2024AdventOfCode/pkg/daytwentytwo"
 	"github.com/trsheph/2024AdventOfCode/pkg/daytwo"
 )
 
@@ -72,5 +74,9 @@ func main() {
 		daythirteen.ProcDayThirteen(inFile)
 	} else if inDay == 14 {
 		dayfourteen.ProcDayFourteen(inFile)
+	} else if inDay == 22 {
+		daytwentytwo.ProcDayTwentyTwo(inFile)
+	} else if inDay == 23 {
+		daytwentythree.ProcDayTwentyThree(inFile)
 	}
 }
